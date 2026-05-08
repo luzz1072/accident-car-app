@@ -27,7 +27,7 @@
   .home-hero { background:linear-gradient(160deg,#1a0a00 0%,#0a0a0f 60%); padding:24px 20px 32px; position:relative; overflow:hidden; }
   .home-hero::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; background:radial-gradient(circle,rgba(255,77,0,.25) 0%,transparent 70%); border-radius:50%; }
   .logo-mark { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:var(--accent); margin-bottom:16px; }
-  .hero-title { font-size:26px; font-weight:900; line-height:1.25; margin-bottom:8px; }
+  .hero-title { font-size:24px; font-weight:900; line-height:1.25; margin-bottom:8px; }
   .hero-title span { color:var(--accent); }
   .hero-sub { font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:24px; }
   .cta-btn { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--accent); color:#fff; border:none; border-radius:14px; padding:16px; font-size:16px; font-weight:700; font-family:'Noto Sans KR',sans-serif; cursor:pointer; width:100%; }
@@ -89,7 +89,7 @@
   .complete-title { font-size:22px; font-weight:900; margin-bottom:8px; }
   .complete-sub { font-size:13px; color:var(--text2); line-height:1.6; }
   .complete-num { font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--accent); margin-top:8px; letter-spacing:2px; }
-  .kakao-card { margin:0 20px 16px; background:var(--kakao); border-radius:16px; padding:18px; display:flex; align-items:center; gap:14px; cursor:pointer; }
+  .kakao-card { background:var(--kakao); border-radius:16px; padding:18px; display:flex; align-items:center; gap:14px; cursor:pointer; }
   .kakao-logo { width:44px; height:44px; background:var(--kakao-text); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
   .kakao-info { flex:1; }
   .kakao-name { font-size:15px; font-weight:700; color:var(--kakao-text); }
@@ -131,6 +131,8 @@
 </div>
 <div class="phone">
   <div class="phone-notch"></div>
+
+  <!-- 홈 -->
   <div class="screen active" id="screen-home">
     <div class="home-hero">
       <div class="logo-mark">ACCIDENT CAR BUY</div>
@@ -163,6 +165,8 @@
       <div class="bnav-item"><div class="bnav-icon">👤</div><div class="bnav-label">내 정보</div></div>
     </div>
   </div>
+
+  <!-- 차량정보 -->
   <div class="screen" id="screen-car-info">
     <div class="topbar"><div class="back-btn" onclick="showScreen('home')">←</div><div class="topbar-title">차량 정보 입력</div><div style="width:36px"></div></div>
     <div class="progress-bar-wrap"><div class="progress-label"><span>1단계 / 3단계</span><span>33%</span></div><div class="progress-track"><div class="progress-fill" style="width:33%"></div></div></div>
@@ -182,26 +186,47 @@
     </div>
     <button class="next-btn" onclick="showScreen('photo')">다음 단계 — 사진 업로드 →</button>
   </div>
+
+  <!-- 사진 업로드 -->
   <div class="screen" id="screen-photo">
     <div class="topbar"><div class="back-btn" onclick="showScreen('car-info')">←</div><div class="topbar-title">사진 업로드</div><div style="width:36px"></div></div>
     <div class="progress-bar-wrap"><div class="progress-label"><span>2단계 / 3단계</span><span>66%</span></div><div class="progress-track"><div class="progress-fill" style="width:66%"></div></div></div>
     <div style="padding:0 20px 10px;font-size:12px;color:var(--text2)">4방향 사진은 필수예요. 사고 부위는 클로즈업해서 추가로 찍어주세요.</div>
+    <div style="margin:0 20px 12px;background:rgba(254,229,0,.08);border:1px solid rgba(254,229,0,.25);border-radius:12px;padding:11px 14px;font-size:12px;color:#ffd166;line-height:1.6;">
+      💬 사진은 <strong>카카오톡 채널</strong>로 전송해 주세요.<br>아래 슬롯을 탭하면 채널로 바로 연결됩니다.
+    </div>
     <div class="photo-guide">
-      <div class="photo-slot filled"><div class="photo-mock-img">🚗</div><div class="photo-slot-label">전면</div></div>
-      <div class="photo-slot filled"><div class="photo-mock-img">🚙</div><div class="photo-slot-label">후면</div></div>
-      <div class="photo-slot"><div class="photo-slot-icon">📷</div><div class="photo-slot-label">좌측면</div><div class="photo-slot-sub">탭하여 추가</div></div>
-      <div class="photo-slot"><div class="photo-slot-icon">📷</div><div class="photo-slot-label">우측면</div><div class="photo-slot-sub">탭하여 추가</div></div>
+      <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;">
+        <div class="photo-slot filled"><div class="photo-mock-img">🚗</div><div class="photo-slot-label">전면 사진 전송</div></div>
+      </a>
+      <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;">
+        <div class="photo-slot filled"><div class="photo-mock-img">🚙</div><div class="photo-slot-label">후면 사진 전송</div></div>
+      </a>
+      <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;">
+        <div class="photo-slot"><div class="photo-slot-icon">📷</div><div class="photo-slot-label">좌측면 전송</div><div class="photo-slot-sub">탭 → 카카오톡</div></div>
+      </a>
+      <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;">
+        <div class="photo-slot"><div class="photo-slot-icon">📷</div><div class="photo-slot-label">우측면 전송</div><div class="photo-slot-sub">탭 → 카카오톡</div></div>
+      </a>
     </div>
     <div class="extra-photo-wrap">
       <div class="form-label" style="padding:0 0 8px">사고 부위 클로즈업</div>
       <div class="extra-slots">
-        <div class="extra-slot" style="background:var(--surface);border-style:solid;border-color:var(--green);font-size:28px">💥</div>
-        <div class="extra-slot">＋</div><div class="extra-slot">＋</div><div class="extra-slot">＋</div>
+        <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;flex-shrink:0;">
+          <div class="extra-slot" style="border-style:solid;border-color:var(--green);font-size:28px">💥</div>
+        </a>
+        <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;flex-shrink:0;"><div class="extra-slot">＋</div></a>
+        <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;flex-shrink:0;"><div class="extra-slot">＋</div></a>
+        <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;flex-shrink:0;"><div class="extra-slot">＋</div></a>
       </div>
     </div>
     <div class="tip-box">💡 <strong>촬영 팁</strong><br>자연광 아래에서 찍으면 더 정확한 견적을 받을 수 있어요. 흠집·찌그러짐은 가까이서 찍어주세요.</div>
-    <button class="next-btn" onclick="showScreen('estimate')">다음 단계 — 견적 정보 입력 →</button>
+    <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;display:block;margin:8px 20px 24px;">
+      <button class="next-btn" style="width:100%;margin:0;background:var(--kakao);color:var(--kakao-text);">💬 카카오톡으로 사진 전송하기</button>
+    </a>
   </div>
+
+  <!-- 견적 요청 -->
   <div class="screen" id="screen-estimate">
     <div class="topbar"><div class="back-btn" onclick="showScreen('photo')">←</div><div class="topbar-title">견적 요청</div><div style="width:36px"></div></div>
     <div class="progress-bar-wrap"><div class="progress-label"><span>3단계 / 3단계</span><span>99%</span></div><div class="progress-track"><div class="progress-fill" style="width:99%"></div></div></div>
@@ -219,8 +244,12 @@
     <div class="form-section"><div class="form-label">희망 가격 (선택)</div><input class="form-input" type="text" placeholder="예) 500만원 이상"></div>
     <div class="form-section"><div class="form-label">추가 메모</div><input class="form-input" type="text" placeholder="기타 참고사항을 자유롭게 적어주세요"></div>
     <div class="privacy-check"><div class="check-box">✓</div><div>개인정보 수집 및 이용에 동의합니다. 수집된 정보는 견적 제공 목적으로만 사용됩니다.</div></div>
-    <button class="next-btn" onclick="showScreen('kakao')" style="background:var(--kakao);color:var(--kakao-text)">🟡 견적 요청 & 카카오 상담 시작</button>
+    <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;display:block;margin:8px 20px 24px;">
+      <button class="next-btn" style="width:100%;margin:0;background:var(--kakao);color:var(--kakao-text);">🟡 견적 요청 & 카카오 상담 시작</button>
+    </a>
   </div>
+
+  <!-- 완료 -->
   <div class="screen" id="screen-kakao">
     <div class="complete-hero">
       <div class="complete-icon">✅</div>
@@ -228,17 +257,21 @@
       <div class="complete-sub">담당자가 30분 내로<br>카카오톡으로 연락드릴게요</div>
       <div class="complete-num">#2024-0892</div>
     </div>
-    <div class="kakao-card">
-      <div class="kakao-logo">💬</div>
-      <div class="kakao-info"><div class="kakao-name">카카오톡 1:1 채팅</div><div class="kakao-desc">지금 바로 상담원과 대화하기</div></div>
-      <div class="kakao-arrow">›</div>
-    </div>
+    <a href="https://pf.kakao.com/_QxlBxfG" target="_blank" style="text-decoration:none;display:block;margin:0 20px 16px;">
+      <div class="kakao-card">
+        <div class="kakao-logo">💬</div>
+        <div class="kakao-info"><div class="kakao-name">카카오톡 1:1 채팅</div><div class="kakao-desc">지금 바로 상담원과 대화하기</div></div>
+        <div class="kakao-arrow">›</div>
+      </div>
+    </a>
     <div class="alimtalk-preview">
       <div class="alimtalk-header"><div class="alimtalk-dot"></div><div class="alimtalk-label">카카오 알림톡 발송 예시</div></div>
       <div class="alimtalk-body">안녕하세요, <strong>홍길동</strong>님!<br><br><strong>사고차 매입 견적</strong>이 접수되었습니다.<br><br>· 접수번호: <strong>#2024-0892</strong><br>· 차종: <strong>현대 아반떼 (2021)</strong><br>· 담당자 연락 예정: <strong>30분 내</strong><br><br>추가 문의는 아래 버튼을 눌러주세요.</div>
     </div>
     <button class="next-btn" onclick="showScreen('home')" style="background:var(--surface2);color:var(--text2);border:1px solid var(--border)">처음으로 돌아가기</button>
   </div>
+
+  <!-- 관리자 -->
   <div class="screen" id="screen-admin">
     <div class="topbar"><div style="width:36px"></div><div class="topbar-title">🛠 관리자 대시보드</div><div style="width:36px"></div></div>
     <div class="admin-stats">
@@ -257,6 +290,7 @@
     </div>
   </div>
 </div>
+
 <script>
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
