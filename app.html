@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사고차 매입 앱 프로토타입</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #13131a; --surface2: #1c1c27;
+    --border: #2a2a3d; --accent: #ff4d00; --accent2: #ff8c42;
+    --text: #f0f0f5; --text2: #8888a8; --text3: #555570;
+    --green: #00c896; --yellow: #ffd166; --kakao: #fee500; --kakao-text: #191919;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#050508; font-family:'Noto Sans KR',sans-serif; color:var(--text); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:20px; }
+  .nav-bar { display:flex; gap:8px; margin-bottom:28px; background:var(--surface); border:1px solid var(--border); border-radius:50px; padding:6px; flex-wrap:wrap; justify-content:center; }
+  .nav-btn { padding:8px 18px; border-radius:40px; border:none; cursor:pointer; font-family:'Noto Sans KR',sans-serif; font-size:13px; font-weight:500; background:transparent; color:var(--text2); transition:all .2s; }
+  .nav-btn.active { background:var(--accent); color:#fff; }
+  .phone { width:375px; background:var(--bg); border-radius:44px; border:2px solid var(--border); overflow:hidden; box-shadow:0 40px 80px rgba(0,0,0,.8); }
+  .phone-notch { width:120px; height:28px; background:#000; border-radius:0 0 18px 18px; margin:0 auto; }
+  .screen { display:none; flex-direction:column; min-height:760px; }
+  .screen.active { display:flex; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; padding:16px 20px 12px; }
+  .topbar-title { font-size:16px; font-weight:700; }
+  .back-btn { width:36px; height:36px; background:var(--surface); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; border:1px solid var(--border); }
+  .home-hero { background:linear-gradient(160deg,#1a0a00 0%,#0a0a0f 60%); padding:24px 20px 32px; position:relative; overflow:hidden; }
+  .home-hero::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; background:radial-gradient(circle,rgba(255,77,0,.25) 0%,transparent 70%); border-radius:50%; }
+  .logo-mark { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:var(--accent); margin-bottom:16px; }
+  .hero-title { font-size:26px; font-weight:900; line-height:1.25; margin-bottom:8px; }
+  .hero-title span { color:var(--accent); }
+  .hero-sub { font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:24px; }
+  .cta-btn { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--accent); color:#fff; border:none; border-radius:14px; padding:16px; font-size:16px; font-weight:700; font-family:'Noto Sans KR',sans-serif; cursor:pointer; width:100%; }
+  .steps-row { display:flex; gap:8px; padding:20px 16px; }
+  .step-card { flex:1; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px 10px; text-align:center; }
+  .step-num { width:28px; height:28px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; margin:0 auto 8px; }
+  .step-icon { font-size:20px; margin-bottom:6px; }
+  .step-label { font-size:11px; color:var(--text2); line-height:1.4; }
+  .review-section { padding:0 16px 20px; }
+  .section-header { font-size:13px; font-weight:700; color:var(--text2); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+  .review-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:8px; }
+  .review-stars { color:var(--yellow); font-size:12px; margin-bottom:4px; }
+  .review-text { font-size:12px; color:var(--text2); line-height:1.5; }
+  .review-author { font-size:11px; color:var(--text3); margin-top:6px; }
+  .bottom-nav { display:flex; background:var(--surface); border-top:1px solid var(--border); padding:12px 0 20px; margin-top:auto; }
+  .bnav-item { flex:1; text-align:center; cursor:pointer; }
+  .bnav-icon { font-size:20px; }
+  .bnav-label { font-size:10px; color:var(--text3); margin-top:2px; }
+  .bnav-item.active .bnav-label { color:var(--accent); }
+  .progress-bar-wrap { padding:0 20px 16px; }
+  .progress-label { display:flex; justify-content:space-between; font-size:11px; color:var(--text2); margin-bottom:6px; }
+  .progress-track { height:4px; background:var(--surface2); border-radius:2px; overflow:hidden; }
+  .progress-fill { height:100%; background:var(--accent); border-radius:2px; }
+  .form-section { padding:0 20px 16px; }
+  .form-label { font-size:12px; font-weight:700; color:var(--text2); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
+  .form-input { width:100%; background:var(--surface); border:1.5px solid var(--border); border-radius:12px; padding:13px 16px; color:var(--text); font-family:'Noto Sans KR',sans-serif; font-size:14px; outline:none; }
+  .form-input:focus { border-color:var(--accent); }
+  .form-input::placeholder { color:var(--text3); }
+  .select-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .select-chip { background:var(--surface); border:1.5px solid var(--border); border-radius:10px; padding:10px; text-align:center; font-size:13px; cursor:pointer; color:var(--text2); }
+  .select-chip.selected { border-color:var(--accent); background:rgba(255,77,0,.1); color:var(--accent); font-weight:700; }
+  .accident-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .accident-chip { background:var(--surface); border:1.5px solid var(--border); border-radius:10px; padding:12px 6px; text-align:center; font-size:11px; cursor:pointer; color:var(--text2); }
+  .accident-chip .chip-icon { font-size:20px; display:block; margin-bottom:4px; }
+  .accident-chip.selected { border-color:var(--accent); background:rgba(255,77,0,.1); color:var(--accent); }
+  .next-btn { margin:8px 20px 24px; background:var(--accent); color:#fff; border:none; border-radius:14px; padding:16px; font-size:15px; font-weight:700; font-family:'Noto Sans KR',sans-serif; cursor:pointer; width:calc(100% - 40px); }
+  .photo-guide { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 20px 16px; }
+  .photo-slot { background:var(--surface); border:1.5px dashed var(--border); border-radius:14px; aspect-ratio:1.3; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; position:relative; overflow:hidden; }
+  .photo-slot.filled { border-style:solid; border-color:var(--green); }
+  .photo-slot-icon { font-size:24px; margin-bottom:6px; opacity:.5; }
+  .photo-slot-label { font-size:11px; color:var(--text2); }
+  .photo-slot-sub { font-size:10px; color:var(--text3); margin-top:2px; }
+  .photo-mock-img { position:absolute; inset:0; background:linear-gradient(135deg,#1e2030 0%,#2a2040 100%); display:flex; align-items:center; justify-content:center; font-size:32px; opacity:.6; }
+  .extra-photo-wrap { padding:0 20px 16px; }
+  .extra-slots { display:flex; gap:8px; overflow-x:auto; }
+  .extra-slot { min-width:70px; height:70px; background:var(--surface); border:1.5px dashed var(--border); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; cursor:pointer; flex-shrink:0; }
+  .tip-box { margin:0 20px 16px; background:rgba(255,209,102,.07); border:1px solid rgba(255,209,102,.2); border-radius:12px; padding:12px 14px; font-size:12px; color:var(--yellow); line-height:1.6; }
+  .estimate-summary { margin:0 20px 16px; background:var(--surface2); border:1px solid var(--border); border-radius:14px; padding:14px; }
+  .summary-title { font-size:11px; color:var(--text2); margin-bottom:8px; }
+  .summary-row { display:flex; justify-content:space-between; align-items:center; font-size:13px; padding:4px 0; }
+  .summary-key { color:var(--text2); }
+  .summary-val { font-weight:600; }
+  .accident-tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:6px; }
+  .accident-tag { background:rgba(255,77,0,.15); border:1px solid rgba(255,77,0,.3); color:var(--accent2); border-radius:6px; padding:3px 8px; font-size:11px; }
+  .privacy-check { display:flex; align-items:flex-start; gap:10px; margin:0 20px 16px; font-size:12px; color:var(--text2); line-height:1.5; }
+  .check-box { width:18px; height:18px; min-width:18px; background:var(--accent); border-radius:4px; display:grid; place-items:center; font-size:11px; }
+  .complete-hero { padding:40px 20px 24px; text-align:center; }
+  .complete-icon { width:80px; height:80px; background:rgba(0,200,150,.12); border:2px solid var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:36px; margin:0 auto 16px; }
+  .complete-title { font-size:22px; font-weight:900; margin-bottom:8px; }
+  .complete-sub { font-size:13px; color:var(--text2); line-height:1.6; }
+  .complete-num { font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--accent); margin-top:8px; letter-spacing:2px; }
+  .kakao-card { margin:0 20px 16px; background:var(--kakao); border-radius:16px; padding:18px; display:flex; align-items:center; gap:14px; cursor:pointer; }
+  .kakao-logo { width:44px; height:44px; background:var(--kakao-text); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+  .kakao-info { flex:1; }
+  .kakao-name { font-size:15px; font-weight:700; color:var(--kakao-text); }
+  .kakao-desc { font-size:12px; color:rgba(0,0,0,.5); margin-top:2px; }
+  .kakao-arrow { font-size:20px; color:rgba(0,0,0,.4); }
+  .alimtalk-preview { margin:0 20px 16px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px; }
+  .alimtalk-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .alimtalk-dot { width:8px; height:8px; background:var(--yellow); border-radius:50%; }
+  .alimtalk-label { font-size:11px; color:var(--yellow); font-weight:700; }
+  .alimtalk-body { font-size:12px; color:var(--text2); line-height:1.7; }
+  .alimtalk-body strong { color:var(--text); }
+  .admin-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 20px 16px; }
+  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px; }
+  .stat-label { font-size:11px; color:var(--text2); margin-bottom:4px; }
+  .stat-value { font-size:24px; font-weight:900; }
+  .stat-value.accent { color:var(--accent); }
+  .stat-value.green { color:var(--green); }
+  .stat-change { font-size:11px; color:var(--green); margin-top:2px; }
+  .inquiry-list { padding:0 20px 20px; }
+  .inquiry-item { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:8px; display:flex; align-items:center; gap:12px; cursor:pointer; }
+  .inquiry-thumb { width:48px; height:48px; background:var(--surface2); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .inquiry-info { flex:1; min-width:0; }
+  .inquiry-car { font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .inquiry-meta { font-size:11px; color:var(--text2); margin-top:2px; }
+  .inquiry-status { font-size:10px; font-weight:700; padding:4px 8px; border-radius:6px; flex-shrink:0; }
+  .status-new { background:rgba(255,77,0,.15); color:var(--accent); border:1px solid rgba(255,77,0,.3); }
+  .status-review { background:rgba(255,209,102,.12); color:var(--yellow); border:1px solid rgba(255,209,102,.25); }
+  .status-done { background:rgba(0,200,150,.1); color:var(--green); border:1px solid rgba(0,200,150,.25); }
+</style>
+</head>
+<body>
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="showScreen('home')">홈</button>
+  <button class="nav-btn" onclick="showScreen('car-info')">차량정보</button>
+  <button class="nav-btn" onclick="showScreen('photo')">사진업로드</button>
+  <button class="nav-btn" onclick="showScreen('estimate')">견적요청</button>
+  <button class="nav-btn" onclick="showScreen('kakao')">카카오 연동</button>
+  <button class="nav-btn" onclick="showScreen('admin')">관리자</button>
+</div>
+<div class="phone">
+  <div class="phone-notch"></div>
+  <div class="screen active" id="screen-home">
+    <div class="home-hero">
+      <div class="logo-mark">ACCIDENT CAR BUY</div>
+      <div class="hero-title">사고차 고장차<br>문제있는 차량도<br><span>제값</span>에 팔 수 있습니다</div>
+      <div class="hero-sub">사진 몇 장이면 5분 안에<br>무료 견적을 받아볼 수 있어요</div>
+      <button class="cta-btn" onclick="showScreen('car-info')">📸 지금 바로 견적받기</button>
+    </div>
+    <div class="steps-row">
+      <div class="step-card"><div class="step-icon">📝</div><div class="step-num">1</div><div class="step-label">차량<br>정보 입력</div></div>
+      <div class="step-card"><div class="step-icon">📸</div><div class="step-num">2</div><div class="step-label">사진<br>업로드</div></div>
+      <div class="step-card"><div class="step-icon">💬</div><div class="step-num">3</div><div class="step-label">카카오<br>상담</div></div>
+    </div>
+    <div class="review-section">
+      <div class="section-header">실제 고객 후기</div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">오전에 사진 보내고 1시간 만에 견적 받았어요. 오후에 바로 이전까지 끝났습니다. 이렇게 빠를 줄 몰랐어요.</div>
+        <div class="review-author">경기도 수원 · 이○○님</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">고장차라 팔기 힘들 거라 생각했는데, 접수하고 2시간 반 만에 거래 완료됐어요. 가격도 만족스럽습니다.</div>
+        <div class="review-author">서울 강남 · 박○○님</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="bnav-item active"><div class="bnav-icon">🏠</div><div class="bnav-label">홈</div></div>
+      <div class="bnav-item" onclick="showScreen('car-info')"><div class="bnav-icon">🚗</div><div class="bnav-label">견적</div></div>
+      <div class="bnav-item"><div class="bnav-icon">💬</div><div class="bnav-label">상담</div></div>
+      <div class="bnav-item"><div class="bnav-icon">👤</div><div class="bnav-label">내 정보</div></div>
+    </div>
+  </div>
+  <div class="screen" id="screen-car-info">
+    <div class="topbar"><div class="back-btn" onclick="showScreen('home')">←</div><div class="topbar-title">차량 정보 입력</div><div style="width:36px"></div></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>1단계 / 3단계</span><span>33%</span></div><div class="progress-track"><div class="progress-fill" style="width:33%"></div></div></div>
+    <div class="form-section"><div class="form-label">차량번호</div><input class="form-input" type="text" placeholder="예) 12가 3456"></div>
+    <div class="form-section"><div class="form-label">연식</div><div class="select-grid"><div class="select-chip selected">2020년~</div><div class="select-chip">2017~2019년</div><div class="select-chip">2014~2016년</div><div class="select-chip">~2013년</div></div></div>
+    <div class="form-section"><div class="form-label">제조사 / 모델</div><input class="form-input" type="text" placeholder="예) 현대 / 아반떼"></div>
+    <div class="form-section"><div class="form-label">주행거리</div><input class="form-input" type="text" placeholder="예) 85,000 km"></div>
+    <div class="form-section"><div class="form-label">사고 부위 (복수 선택 가능)</div>
+      <div class="accident-grid">
+        <div class="accident-chip selected"><span class="chip-icon">⬆️</span>전면</div>
+        <div class="accident-chip"><span class="chip-icon">⬇️</span>후면</div>
+        <div class="accident-chip selected"><span class="chip-icon">◀️</span>좌측</div>
+        <div class="accident-chip"><span class="chip-icon">▶️</span>우측</div>
+        <div class="accident-chip"><span class="chip-icon">🔝</span>루프</div>
+        <div class="accident-chip"><span class="chip-icon">⚙️</span>엔진룸</div>
+      </div>
+    </div>
+    <button class="next-btn" onclick="showScreen('photo')">다음 단계 — 사진 업로드 →</button>
+  </div>
+  <div class="screen" id="screen-photo">
+    <div class="topbar"><div class="back-btn" onclick="showScreen('car-info')">←</div><div class="topbar-title">사진 업로드</div><div style="width:36px"></div></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>2단계 / 3단계</span><span>66%</span></div><div class="progress-track"><div class="progress-fill" style="width:66%"></div></div></div>
+    <div style="padding:0 20px 10px;font-size:12px;color:var(--text2)">4방향 사진은 필수예요. 사고 부위는 클로즈업해서 추가로 찍어주세요.</div>
+    <div class="photo-guide">
+      <div class="photo-slot filled"><div class="photo-mock-img">🚗</div><div class="photo-slot-label">전면</div></div>
+      <div class="photo-slot filled"><div class="photo-mock-img">🚙</div><div class="photo-slot-label">후면</div></div>
+      <div class="photo-slot"><div class="photo-slot-icon">📷</div><div class="photo-slot-label">좌측면</div><div class="photo-slot-sub">탭하여 추가</div></div>
+      <div class="photo-slot"><div class="photo-slot-icon">📷</div><div class="photo-slot-label">우측면</div><div class="photo-slot-sub">탭하여 추가</div></div>
+    </div>
+    <div class="extra-photo-wrap">
+      <div class="form-label" style="padding:0 0 8px">사고 부위 클로즈업</div>
+      <div class="extra-slots">
+        <div class="extra-slot" style="background:var(--surface);border-style:solid;border-color:var(--green);font-size:28px">💥</div>
+        <div class="extra-slot">＋</div><div class="extra-slot">＋</div><div class="extra-slot">＋</div>
+      </div>
+    </div>
+    <div class="tip-box">💡 <strong>촬영 팁</strong><br>자연광 아래에서 찍으면 더 정확한 견적을 받을 수 있어요. 흠집·찌그러짐은 가까이서 찍어주세요.</div>
+    <button class="next-btn" onclick="showScreen('estimate')">다음 단계 — 견적 정보 입력 →</button>
+  </div>
+  <div class="screen" id="screen-estimate">
+    <div class="topbar"><div class="back-btn" onclick="showScreen('photo')">←</div><div class="topbar-title">견적 요청</div><div style="width:36px"></div></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>3단계 / 3단계</span><span>99%</span></div><div class="progress-track"><div class="progress-fill" style="width:99%"></div></div></div>
+    <div class="estimate-summary">
+      <div class="summary-title">입력한 차량 정보 요약</div>
+      <div class="summary-row"><span class="summary-key">차량번호</span><span class="summary-val">12가 3456</span></div>
+      <div class="summary-row"><span class="summary-key">차종</span><span class="summary-val">현대 아반떼 (2021)</span></div>
+      <div class="summary-row"><span class="summary-key">주행거리</span><span class="summary-val">85,000 km</span></div>
+      <div class="summary-row"><span class="summary-key">사고 부위</span><span></span></div>
+      <div class="accident-tags"><span class="accident-tag">전면</span><span class="accident-tag">좌측</span></div>
+    </div>
+    <div class="form-section"><div class="form-label">이름</div><input class="form-input" type="text" placeholder="홍길동"></div>
+    <div class="form-section"><div class="form-label">연락처</div><input class="form-input" type="tel" placeholder="010-0000-0000"></div>
+    <div class="form-section"><div class="form-label">차량 위치</div><input class="form-input" type="text" placeholder="예) 경기도 화성시"></div>
+    <div class="form-section"><div class="form-label">희망 가격 (선택)</div><input class="form-input" type="text" placeholder="예) 500만원 이상"></div>
+    <div class="form-section"><div class="form-label">추가 메모</div><input class="form-input" type="text" placeholder="기타 참고사항을 자유롭게 적어주세요"></div>
+    <div class="privacy-check"><div class="check-box">✓</div><div>개인정보 수집 및 이용에 동의합니다. 수집된 정보는 견적 제공 목적으로만 사용됩니다.</div></div>
+    <button class="next-btn" onclick="showScreen('kakao')" style="background:var(--kakao);color:var(--kakao-text)">🟡 견적 요청 & 카카오 상담 시작</button>
+  </div>
+  <div class="screen" id="screen-kakao">
+    <div class="complete-hero">
+      <div class="complete-icon">✅</div>
+      <div class="complete-title">견적 접수 완료!</div>
+      <div class="complete-sub">담당자가 30분 내로<br>카카오톡으로 연락드릴게요</div>
+      <div class="complete-num">#2024-0892</div>
+    </div>
+    <div class="kakao-card">
+      <div class="kakao-logo">💬</div>
+      <div class="kakao-info"><div class="kakao-name">카카오톡 1:1 채팅</div><div class="kakao-desc">지금 바로 상담원과 대화하기</div></div>
+      <div class="kakao-arrow">›</div>
+    </div>
+    <div class="alimtalk-preview">
+      <div class="alimtalk-header"><div class="alimtalk-dot"></div><div class="alimtalk-label">카카오 알림톡 발송 예시</div></div>
+      <div class="alimtalk-body">안녕하세요, <strong>홍길동</strong>님!<br><br><strong>사고차 매입 견적</strong>이 접수되었습니다.<br><br>· 접수번호: <strong>#2024-0892</strong><br>· 차종: <strong>현대 아반떼 (2021)</strong><br>· 담당자 연락 예정: <strong>30분 내</strong><br><br>추가 문의는 아래 버튼을 눌러주세요.</div>
+    </div>
+    <button class="next-btn" onclick="showScreen('home')" style="background:var(--surface2);color:var(--text2);border:1px solid var(--border)">처음으로 돌아가기</button>
+  </div>
+  <div class="screen" id="screen-admin">
+    <div class="topbar"><div style="width:36px"></div><div class="topbar-title">🛠 관리자 대시보드</div><div style="width:36px"></div></div>
+    <div class="admin-stats">
+      <div class="stat-card"><div class="stat-label">오늘 접수</div><div class="stat-value accent">12</div><div class="stat-change">↑ 3 어제 대비</div></div>
+      <div class="stat-card"><div class="stat-label">처리 완료</div><div class="stat-value green">8</div><div class="stat-change">응답률 94%</div></div>
+      <div class="stat-card"><div class="stat-label">이번 달 매입</div><div class="stat-value" style="font-size:18px">34대</div></div>
+      <div class="stat-card"><div class="stat-label">대기 중</div><div class="stat-value" style="color:var(--yellow)">4</div><div class="stat-change" style="color:var(--yellow)">답변 필요</div></div>
+    </div>
+    <div class="inquiry-list">
+      <div class="section-header">최근 접수 목록</div>
+      <div class="inquiry-item"><div class="inquiry-thumb">🚗</div><div class="inquiry-info"><div class="inquiry-car">현대 아반떼 (2021)</div><div class="inquiry-meta">12가 3456 · 경기 화성 · 5분 전</div></div><div class="inquiry-status status-new">신규</div></div>
+      <div class="inquiry-item"><div class="inquiry-thumb">🚙</div><div class="inquiry-info"><div class="inquiry-car">기아 K5 (2019)</div><div class="inquiry-meta">34나 5678 · 서울 강남 · 1시간 전</div></div><div class="inquiry-status status-review">검토중</div></div>
+      <div class="inquiry-item"><div class="inquiry-thumb">🚕</div><div class="inquiry-info"><div class="inquiry-car">쌍용 티볼리 (2020)</div><div class="inquiry-meta">56다 7890 · 인천 남동 · 3시간 전</div></div><div class="inquiry-status status-done">완료</div></div>
+      <div class="inquiry-item"><div class="inquiry-thumb">🚐</div><div class="inquiry-info"><div class="inquiry-car">현대 스타리아 (2022)</div><div class="inquiry-meta">78라 1234 · 경기 수원 · 오전</div></div><div class="inquiry-status status-review">검토중</div></div>
+      <div class="inquiry-item"><div class="inquiry-thumb">🏎️</div><div class="inquiry-info"><div class="inquiry-car">제네시스 G80 (2020)</div><div class="inquiry-meta">90마 5678 · 서울 서초 · 어제</div></div><div class="inquiry-status status-done">완료</div></div>
+    </div>
+  </div>
+</div>
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach((b, i) => {
+    const ids = ['home','car-info','photo','estimate','kakao','admin'];
+    b.classList.toggle('active', ids[i] === id);
+  });
+}
+document.querySelectorAll('.select-chip').forEach(c => {
+  c.onclick = () => { c.parentElement.querySelectorAll('.select-chip').forEach(x => x.classList.remove('selected')); c.classList.add('selected'); };
+});
+document.querySelectorAll('.accident-chip').forEach(c => {
+  c.onclick = () => c.classList.toggle('selected');
+});
+</script>
+</body>
+</html>
